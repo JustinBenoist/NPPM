@@ -1,0 +1,12 @@
+# Blender 4.4.1 MTL File: 'seafloor.blend'
+# www.blender.org
+
+newmtl Material.005
+Ns 289.639679
+Ka 1.000000 1.000000 1.000000
+Ks 0.089091 0.089091 0.089091
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/jbenoist/Downloads/textures/3D_fish_crap Kopie7 Kopie.jpg

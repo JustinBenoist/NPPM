@@ -1,0 +1,168 @@
+<scene version="3.0.0">
+    <integrator type="ptracer">
+       <integer name="max_depth" value="5"/>
+    </integrator>
+   <sensor type="perspective">
+       <float name="fov" value="21.07066558785273" />
+       <transform name="to_world">
+           <lookat origin="0.8546046073249707, 0.9971697150490972, 3.7060646899502854" target="-0.02506746396664289, 0.9355584033996114, 0.17512954297597427" up="0.2130303499159189, 0.9605838857903942, 0.17859638399062833"/>
+       </transform>
+       <sampler type="independent">
+           <integer name="sample_count" value="2000" />
+       </sampler>
+       <film type="hdrfilm">
+           <integer name="width" value="256" />
+           <integer name="height" value="256" />
+           <string name="file_format" value="openexr" />
+           <string name="pixel_format" value="rgb" />
+           <rfilter type="tent" />
+       </film>
+   </sensor>
+
+
+
+        <bsdf type="dielectric" id="specular_0">
+           <string name="int_ior" value="benzene"/>
+           <string name="ext_ior" value="air"/>
+       </bsdf>
+        <bsdf type="dielectric" id="specular_1">
+           <string name="int_ior" value="benzene"/>
+           <string name="ext_ior" value="air"/>
+       </bsdf>
+    <bsdf type="bumpmap" id="specular_2">
+        <texture name="arbitrary" type="bitmap">
+            <boolean name="raw" value="true"/>
+            <string name="filename" value="bumpmaps/bumpmap_0.png"/>
+        </texture>
+        <bsdf type="dielectric" >
+           <string name="int_ior" value="benzene"/>
+           <string name="ext_ior" value="air"/>
+       </bsdf>
+    </bsdf>
+    <bsdf type="diffuse" id="diffuse_0">
+        <rgb name="reflectance" value="0.5566899040812336, 0.43890158326422835, 0.7053096843955714"/>
+    </bsdf>
+    <bsdf type="twosided" id="LeftWall" >
+        <bsdf type="diffuse" >
+            <rgb name="reflectance" value="0.8312535569814025, 0.4969817218696083, 0.24905158528562985"/>
+        </bsdf>
+    </bsdf>
+    <bsdf type="twosided" id="RightWall" >
+        <bsdf type="diffuse" >
+            <rgb name="reflectance" value="0.11398208324829227, 0.9500483197366952, 0.290544789772354"/>
+        </bsdf>
+    </bsdf>
+    <bsdf type="twosided" id="Floor" >
+        <bsdf type="diffuse" >
+            <rgb name="reflectance" value="0.725, 0.71, 0.68"/>
+        </bsdf>
+    </bsdf>
+    <bsdf type="twosided" id="Ceiling" >
+        <bsdf type="diffuse" >
+            <rgb name="reflectance" value="0.6072431774912137, 0.267967624053423, 0.7479632850946213"/>
+        </bsdf>
+    </bsdf>
+    <bsdf type="twosided" id="BackWall" >
+        <bsdf type="diffuse" >
+            <rgb name="reflectance" value="0.2807408697238453, 0.5813272292369481, 0.7637036183064682"/>
+        </bsdf>
+    </bsdf>
+    <bsdf type="twosided" id="Light" >
+        <bsdf type="diffuse" >
+            <rgb name="reflectance" value="0, 0, 0"/>
+        </bsdf>
+    </bsdf>
+    <bsdf type="twosided" id="luminaire" >
+        <bsdf type="conductor" >
+            <string name="material" value="none"/>
+        </bsdf>
+    </bsdf>
+ 	<shape type="rectangle" >
+         <transform name="to_world" >
+             <matrix value="-0 1 0 0 0 0 2 0 1 0 0 0 0 0 0 1"/>
+         </transform>
+         <ref id="Floor" />
+     </shape>
+     <shape type="rectangle" >
+         <transform name="to_world" >
+             <matrix value="-1 0 -0 0 0 0 -2 2 0 -1 -0 0 0 0 0 1"/>
+         </transform>
+         <ref id="Ceiling" />
+     </shape>
+     <shape type="rectangle" >
+         <transform name="to_world" >
+             <matrix value="0 1 0 0 1 0 -0 1 -0 0 -2 -1 0 0 0 1"/>
+         </transform>
+         <ref id="BackWall" />
+     </shape>
+     <shape type="rectangle" >
+         <transform name="to_world" >
+             <matrix value="0 -0 2 1 1 0 -0 1 0 1 0 0 0 0 0 1"/>
+         </transform>
+         <ref id="RightWall" />
+     </shape>
+     <shape type="rectangle" >
+         <transform name="to_world" >
+             <matrix value="-0 0 -2 -1 1 0 -0 1 0 -1 -0 0 0 0 0 1"/>
+         </transform>
+         <ref id="LeftWall" />
+     </shape>
+    <shape type="obj">
+        <string name="filename" value="models/model_3.obj" />
+        <transform name="to_world" >
+            <scale x="0.45330132205824086" y="0.6495719261826792" z="0.5588270631161643"/>
+            <rotate x="0.8958193737135032" y="0.06871307947508132" z="0.8382853626606855" angle="301.68340360086097"/>
+            <translate x="-0.6993136709151444" y="0.21213398629805325" z="0.6688636655931093"/>
+        </transform>
+        <ref id="diffuse_0" />
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="models/model_2.obj" />
+        <transform name="to_world" >
+            <scale x="0.5307707218707515" y="0.5175925921646697" z="0.49627819401654377"/>
+            <rotate x="0.37156272296682347" y="0.8507675203090153" z="0.20626344044105094" angle="6.18072801216469"/>
+            <translate x="-0.19712046721277013" y="1.5312184212327935" z="-0.27725492049997"/>
+        </transform>
+        <ref id="specular_0" />
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="models/model_0.obj" />
+        <transform name="to_world" >
+            <scale x="0.5964128121042006" y="0.5207666663361217" z="0.5197919867832237"/>
+            <rotate x="0.4417934731822486" y="0.7921823799465735" z="0.945401699941819" angle="243.47524620565747"/>
+            <translate x="-0.7699005990029861" y="0.5497300585003216" z="-0.4716143378626516"/>
+        </transform>
+        <ref id="specular_1" />
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="models/new_model_2.obj" />
+        <transform name="to_world" >
+            <scale x="0.6291262715494012" y="0.5377994279781171" z="0.450852245241732"/>
+            <rotate x="0.6490615258566672" y="0.26184370117756495" z="0.514640774756737" angle="6.512503536268128"/>
+            <translate x="-0.22266102816264588" y="0.8226719180942283" z="-0.14514941979658058"/>
+        </transform>
+        <ref id="specular_2" />
+    </shape>
+	<shape type="rectangle" >
+        <transform name="to_world" >
+            <scale x="0.0036867052033412073" y="0.0025126454603961188" z="0.0028274968991849683"/>
+            <rotate x="1" y="0" z="0" angle="90"/>
+            <translate x="0" y="1.96" z="0"/>
+            <rotate x="0.6825953214465285" y="0.066109204744361" z="0.09513526885153989" angle="10.423413464227487"/>
+        </transform>
+        <ref id="Light" />
+        <emitter type="area" >
+            <rgb name="radiance" value="163082.87991900285, 163082.87991900285, 163082.87991900285"/>
+        </emitter>
+    </shape>
+    <shape type="obj">
+        <string name="filename" value="models/luminaire.obj" />
+        <transform name="to_world" >
+            <scale x="0.7373410406682415" y="0.5025290920792238" z="0.5654993798369936"/>
+            <rotate x="1" y="0" z="0" angle="90"/>
+            <translate x="0" y="1.96" z="0"/>
+            <rotate x="0.6825953214465285" y="0.066109204744361" z="0.09513526885153989" angle="-3.6433703099011083"/>
+        </transform>
+        <ref id="luminaire" />
+    </shape>
+</scene>

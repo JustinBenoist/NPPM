@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<scene version="3.0.0">
+	<default name="integrator" value="ptracer" />
+	<default name="spp" value="4092" />
+	<default name="resy" value="1024" />
+	<default name="resx" value="1024" />
+	<default name="max_depth" value="10" />
+	<integrator type="$integrator">
+		<integer name="max_depth" value="$max_depth" />
+		<integer name="rr_depth" value="10" />
+		<boolean name="hide_emitters" value="true" />
+	</integrator>
+	<sensor type="perspective">
+		<float name="fov" value="28.11127393434344" />
+		<transform name="to_world">
+			<lookat origin="-3.6988916397094727, 4.745790958404541, 5.178309917449951" target="-0.5 0 0" up="0 1 0" />
+		</transform>
+		<sampler type="independent">
+			<integer name="sample_count" value="$spp" />
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="$resx" />
+			<integer name="height" value="$resy" />
+			<string name="file_format" value="openexr" />
+			<string name="pixel_format" value="rgb" />
+			<rfilter type="box" />
+		</film>
+	</sensor>
+	<bsdf type="twosided" id="Sand" >
+		<bsdf type="diffuse" >
+			<rgb name="reflectance" value="0.235680490732193, 0.17929412424564362, 0.08657383918762207"/>
+		</bsdf>
+	</bsdf>
+    <bsdf type="normalmap" id="Crab">
+        <texture name="normalmap" type="bitmap">
+            <boolean name="raw" value="true"/>
+            <string name="filename" value="textures/crap01_Normal.jpg"/>
+        </texture>
+        <bsdf type="diffuse">
+            <texture type="bitmap" name="reflectance">
+                <string name="filename" value="textures/3D_fish_crap Kopie7 Kopie.jpg"/>
+            </texture>
+        </bsdf>
+    </bsdf>
+	<bsdf type="normalmap" id="SeaShell">
+        <texture name="normalmap" type="bitmap">
+            <boolean name="raw" value="true"/>
+            <string name="filename" value="textures/seashell_01_low_tnormal.png"/>
+        </texture>
+        <bsdf type="diffuse">
+            <texture type="bitmap" name="reflectance">
+                <string name="filename" value="textures/seashell_01_low_color.png"/>
+            </texture>
+        </bsdf>
+    </bsdf>
+	<bsdf type="normalmap" id="clam1">
+        <texture name="normalmap" type="bitmap">
+            <boolean name="raw" value="true"/>
+            <string name="filename" value="textures/Clam_01_Normal_2K.jpg"/>
+        </texture>
+		<bsdf type="diffuse">
+			<texture type="bitmap" name="reflectance">
+				<string name="filename" value="textures/Clam_01_Base_Color_2K.jpeg"/>
+			</texture>
+		</bsdf>
+    </bsdf>
+
+	<bsdf type="normalmap" id="clam2">
+        <texture name="normalmap" type="bitmap">
+            <boolean name="raw" value="true"/>
+            <string name="filename" value="textures/Clam_02_Normal_2K.jpg"/>
+        </texture>
+		<bsdf type="diffuse">
+			<texture type="bitmap" name="reflectance">
+				<string name="filename" value="textures/Clam_02_Base_Color_2K.jpeg"/>
+			</texture>
+		</bsdf>
+    </bsdf>
+
+	<bsdf type="normalmap" id="clam3">
+        <texture name="normalmap" type="bitmap">
+            <boolean name="raw" value="true"/>
+            <string name="filename" value="textures/Clam_03_Normal_2K.jpg"/>
+        </texture>
+		<bsdf type="diffuse">
+			<texture type="bitmap" name="reflectance">
+				<string name="filename" value="textures/Clam_03_Base_Color_2K.jpeg"/>
+			</texture>
+		</bsdf>
+    </bsdf>
+
+	<bsdf type="normalmap" id="clam4">
+        <texture name="normalmap" type="bitmap">
+            <boolean name="raw" value="true"/>
+            <string name="filename" value="textures/Clam_04_Normal_2K.jpg"/>
+        </texture>
+		<bsdf type="diffuse">
+			<texture type="bitmap" name="reflectance">
+				<string name="filename" value="textures/Clam_04_Base_Color_2K.jpeg"/>
+			</texture>
+		</bsdf>
+    </bsdf>
+
+	<bsdf type="twosided" id="Light" >
+		<bsdf type="diffuse" >
+			<rgb name="reflectance" value="0, 0, 0"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="dielectric" id="Water" >
+		<float name="int_ior" value="1.5" />
+		<float name="ext_ior" value="1" />
+	</bsdf>
+
+	<shape type="rectangle" >
+		<transform name="to_world" >
+			<matrix value="0.025 0 0 -3.7 0 0.025 0 11 0 0 0.025 -3.7 0 0 0 1"/>
+		</transform>
+		<ref id="Light" />
+		<emitter type="area" >
+			<rgb name="radiance" value="441127, 281972, 67324"/>
+		</emitter>
+	</shape>
+    <shape type="rectangle" >
+		<transform name="to_world" >
+			<matrix value="0.025 0 0 -2.7 0 0.025 0 12 0 0 0.025 -4.7 0 0 0 1"/>
+		</transform>
+		<ref id="Light" />
+		<emitter type="area" >
+			<rgb name="radiance" value="37324 181972 741127"/>
+		</emitter>
+	</shape>
+	<shape type="obj" >
+		<string name="filename" value="meshes/water.obj" />
+		<transform name="to_world" >
+			<matrix value="1.7 0 0 1.7 0 1.7 0 1 0 0 1.7 1.7 0 0 0 1" />
+		</transform>
+		<ref id="Water" />
+	</shape>
+
+	<shape type="obj" >
+		<string name="filename" value="meshes/crab.obj" />
+		<transform name="to_world" >
+			<matrix value="1 0 0 -1 0 1 0 0 0 0 1 1 0 0 0 1"/>
+		</transform>
+		<ref id="Crab" />
+	</shape>
+	<shape type="obj" >
+		<string name="filename" value="meshes/sand.obj" />
+		<transform name="to_world" >
+			<matrix value="1.2 0 0 1.7 0 1.2 0 0 0 0 1.2 1.7 0 0 0 1" />
+		</transform>
+		<ref id="Sand" />
+	</shape>
+    <shape type="obj" >
+		<string name="filename" value="meshes/shell.obj" />
+		<transform name="to_world">
+			<translate x="-1" y="0.05" z="1"/>
+        </transform>
+		<ref id="SeaShell" />
+	</shape>
+    <shape type="obj" >
+		<string name="filename" value="meshes/clam_01.obj" />
+		<transform name="to_world" >
+			<matrix value="1 0 0 0 0 1 0 0 0 0 1 2 0 0 0 1"/>
+		</transform>
+		<ref id="clam1" />
+	</shape>
+    <shape type="obj" >
+		<string name="filename" value="meshes/clam_02.obj" />
+		<transform name="to_world" >
+			<rotate x="1" angle="178"/>
+			<translate x="0" y="0.4" z="2"/>
+		</transform>
+		<ref id="clam2" />
+	</shape>
+    <shape type="obj" >
+		<string name="filename" value="meshes/clam_03.obj" />
+		<transform name="to_world">
+			<translate x="0" y="0.05" z="2"/>
+        </transform>
+		<ref id="clam3" />
+	</shape>
+    <shape type="obj" >
+		<string name="filename" value="meshes/clam_04.obj" />
+		<transform name="to_world">
+			<translate x="0" y="0.03" z="2"/>
+        </transform>
+		<ref id="clam4" />
+	</shape>
+</scene>
