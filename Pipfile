@@ -4,6 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+tqdm = "*"
+setuptools = "==80.9"
+perlin-noise = "*"
+mitsuba = "*"
+numpy = "*"
+pyexr = "*"
+matplotlib = "*"
+torch = "*"
+torchvision = "*"
 
 [dev-packages]
 
