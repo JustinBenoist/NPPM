@@ -1,4 +1,5 @@
 # Neural Progressive Photon Mapping Implementation (NPPM)
+
 ## 🔧 Installation
 
 Follow the steps below to set up and install the project:
@@ -48,3 +49,53 @@ cd tools/frnn && python3 setup.py install && cd ../..
 ```
 
 After completing these steps, the project should be fully set up and ready to run.
+
+## 🔨 Usage Guid
+
+### 🧪 Testing
+
+To test the model on a Mitsuba3 scene, run:
+
+```bash
+python3 test.py [options]
+```
+
+To see all available arguments:
+
+```bash
+python3 test.py -h
+```
+
+#### Examples
+
+- The `run_commands_*.sh` scripts contain example test configurations.
+
+- You can modify and execute `generate_commands.py` to automatically create multiple test commands with shared parameters, particularly useful for benchmarking and comparisons.
+
+### 🏋️ Training
+
+#### 1. Dataset
+
+The original dataset is available in `scenes/dataset/`.
+
+If you'd like to generate your own dataset:
+
+- Use `integrators/RandomScene.py` to create randomized scenes.
+
+- Generate new bump maps with `integrators/BumpMapGenerator.py` or reuse the existing ones.
+
+- Compute the corresponding image masks using `mask.py`.
+  
+#### 2. Train a Model
+
+Once your dataset is ready, start training with:
+
+```bash
+python3 train.py [options]
+```
+
+For detailed information about training parameters:
+
+```bash
+python3 train.py -h
+```
