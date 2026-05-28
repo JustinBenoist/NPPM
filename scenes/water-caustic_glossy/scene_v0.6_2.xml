@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<scene version="3.0.0">
+	<default name="integrator" value="ptracer" />
+	<default name="spp" value="64" />
+	<default name="resy" value="256" />
+	<default name="resx" value="256" />
+	<default name="max_depth" value="5" />
+	<integrator type="$integrator">
+		<integer name="max_depth" value="$max_depth" />
+		<integer name="rr_depth" value="10" />
+		<!-- <boolean name="hide_emitters" value="true" /> -->
+	</integrator>
+	<sensor type="perspective">
+		<float name="fov" value="19.5" />
+		<transform name="to_world">
+			<matrix value="-1 0 0 0 0 1 0 1 0 0 -1 6.8 0 0 0 1" />
+		</transform>
+		<sampler type="independent">
+			<integer name="sample_count" value="$spp" />
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="$resx" />
+			<integer name="height" value="$resy" />
+			<string name="file_format" value="openexr" />
+			<string name="pixel_format" value="rgb" />
+			<rfilter type="tent" />
+		</film>
+	</sensor>
+	<bsdf type="twosided" id="LeftWall" >
+		<bsdf type="diffuse" >
+			<rgb name="reflectance" value="0.725, 0.71, 0.68"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="RightWall" >
+		<bsdf type="diffuse" >
+			<rgb name="reflectance" value="0.14, 0.6, 0.7"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="Floor" >
+		<bsdf type="diffuse" >
+			<rgb name="reflectance" value="0.725, 0.71, 0.68"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="Ceiling" >
+		<bsdf type="diffuse" >
+			<rgb name="reflectance" value="0.63, 0.065, 0.65"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="BackWall" >
+		<bsdf type="diffuse" >
+			<rgb name="reflectance" value="0.725, 0.71, 0.1"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="ShortBox" >
+		<bsdf type="diffuse" >
+			<rgb name="reflectance" value="0.725, 0.71, 0.68"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="TallBox" >
+		<bsdf type="diffuse" >
+			<rgb name="reflectance" value="0.725, 0.1, 0.2"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="twosided" id="Light" >
+		<bsdf type="diffuse" >
+			<rgb name="reflectance" value="0, 0, 0"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="dielectric" id="Water" >
+		<float name="int_ior" value="1.5" />
+		<float name="ext_ior" value="1" />
+	</bsdf>
+	<shape type="rectangle" >
+		<transform name="to_world" >
+			<matrix value="-0 1 0 0 0 0 2 0 1 0 0 0 0 0 0 1"/>
+		</transform>
+		<ref id="Floor" />
+	</shape>
+	<shape type="rectangle" >
+		<transform name="to_world" >
+			<matrix value="-1 0 -0 0 0 0 -2 2 0 -1 -0 0 0 0 0 1"/>
+		</transform>
+		<ref id="Ceiling" />
+	</shape>
+	<shape type="rectangle" >
+		<transform name="to_world" >
+			<matrix value="0 1 0 0 1 0 -0 1 -0 0 -2 -1 0 0 0 1"/>
+		</transform>
+		<ref id="BackWall" />
+	</shape>
+	<shape type="rectangle" >
+		<transform name="to_world" >
+			<matrix value="0 -0 2 1 1 0 -0 1 0 1 0 0 0 0 0 1"/>
+		</transform>
+		<ref id="RightWall" />
+	</shape>
+	<shape type="rectangle" >
+		<transform name="to_world" >
+			<matrix value="-0 0 -2 -1 1 0 -0 1 0 -1 -0 0 0 0 0 1"/>
+		</transform>
+		<ref id="LeftWall" />
+	</shape>
+	<shape type="sphere" >
+		<transform name="to_world" >
+			<matrix value="0.28 -0.0660334 0 0.5132 0 0.28 -0.161384 0.15215 0.0649865 0.148551 0.28 0.44471 0 0 0 1"/>
+		</transform>
+		<ref id="ShortBox" />
+	</shape>
+	<shape type="cube" >
+		<transform name="to_world" >
+			<matrix value="0.10 0.064934 0 -0.4 -0 0.01 -0.342479 0.85942 -0.0659716 0.157753 0 0.291415 0 0 0 1"/>
+		</transform>
+		<ref id="TallBox" />
+	</shape>
+	<shape type="rectangle" >
+		<transform name="to_world" >
+			<matrix value="-0.0025 0 -0 -0.5 0 0 -0.5 1.9 0 -0.002 -0 -0.5 0 0 0 1"/>
+		</transform>
+		<ref id="Light" />
+		<emitter type="area" >
+			<rgb name="radiance" value="541127, 381972, 127324"/>
+		</emitter>
+	</shape>
+	<shape type="obj" >
+		<string name="filename" value="models/Mesh001.obj" />
+		<transform name="to_world" >
+			<matrix value="1.5 0 1.5 -0.5 0 1.5 0 0 -1.5 0 1.5 0 0 0 0 1"/>
+		</transform>
+		<ref id="Water" />
+	</shape>
+	<!-- <shape type="obj" >
+		<string name="filename" value="models/Mesh000.obj" />
+		<transform name="to_world" >
+			<matrix value="1 0 0 0 0 1.5 0 0 0 0 1 0 0 0 0 1"/>
+		</transform>
+		<boolean name="face_normals" value="true" />
+		<ref id="Water" />
+	</shape> -->
+</scene>

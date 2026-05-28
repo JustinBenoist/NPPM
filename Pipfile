@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+tqdm = "*"
+setuptools = "==80.9"
+perlin-noise = "*"
+mitsuba = "*"
+numpy = "*"
+pyexr = "*"
+matplotlib = "*"
+torch = "*"
+torchvision = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"
+python_full_version = "3.12.13"

@@ -1,0 +1,1211 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<scene version="3.0.0">
+	<default name="integrator" value="path" />
+	<default name="spp" value="512" />
+	<default name="resy" value="1024" />
+	<default name="resx" value="1024" />
+	<default name="max_depth" value="10" />
+	<integrator type="$integrator">
+		<integer name="max_depth" value="$max_depth" />
+		<integer name="rr_depth" value="10" />
+		<boolean name="hide_emitters" value="true" />
+	</integrator>
+	<sensor type="orthographic">
+		<transform name="to_world">
+			<!-- Resize the sensor plane to 20x20 world space units -->
+			<scale x="100" y="100"/>
+
+			<!-- Move and rotate the camera so that looks from (1, 1, 1) to (1, 2, 1)
+				and the direction (0, 0, 1) points "up" in the output image -->
+			<lookat origin="0, 100, 0" target="0, 0, 0" up="0, 0, 1"/>
+		</transform>
+		<sampler type="independent">
+			<integer name="sample_count" value="$spp" />
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="$resx" />
+			<integer name="height" value="$resy" />
+			<string name="file_format" value="openexr" />
+			<string name="pixel_format" value="rgb" />
+			<rfilter type="box" />
+		</film>
+	</sensor>
+	<bsdf type="twosided" id="Sand" >
+		<bsdf type="diffuse" >
+			<rgb name="reflectance" value="0.235680490732193, 0.17929412424564362, 0.08657383918762207"/>
+		</bsdf>
+	</bsdf>
+    <bsdf type="normalmap" id="Crab">
+        <texture name="normalmap" type="bitmap">
+            <boolean name="raw" value="true"/>
+            <string name="filename" value="textures/crap01_Normal.jpg"/>
+        </texture>
+        <bsdf type="diffuse">
+            <texture type="bitmap" name="reflectance">
+                <string name="filename" value="textures/3D_fish_crap Kopie7 Kopie.jpg"/>
+            </texture>
+        </bsdf>
+    </bsdf>
+	<bsdf type="normalmap" id="SeaShell">
+        <texture name="normalmap" type="bitmap">
+            <boolean name="raw" value="true"/>
+            <string name="filename" value="textures/seashell_01_low_tnormal.png"/>
+        </texture>
+        <bsdf type="diffuse">
+            <texture type="bitmap" name="reflectance">
+                <string name="filename" value="textures/seashell_01_low_color.png"/>
+            </texture>
+        </bsdf>
+    </bsdf>
+	<bsdf type="normalmap" id="clam1">
+        <texture name="normalmap" type="bitmap">
+            <boolean name="raw" value="true"/>
+            <string name="filename" value="textures/Clam_01_Normal_2K.jpg"/>
+        </texture>
+		<bsdf type="diffuse">
+			<texture type="bitmap" name="reflectance">
+				<string name="filename" value="textures/Clam_01_Base_Color_2K.jpeg"/>
+			</texture>
+		</bsdf>
+    </bsdf>
+
+	<bsdf type="normalmap" id="clam2">
+        <texture name="normalmap" type="bitmap">
+            <boolean name="raw" value="true"/>
+            <string name="filename" value="textures/Clam_02_Normal_2K.jpg"/>
+        </texture>
+		<bsdf type="diffuse">
+			<texture type="bitmap" name="reflectance">
+				<string name="filename" value="textures/Clam_02_Base_Color_2K.jpeg"/>
+			</texture>
+		</bsdf>
+    </bsdf>
+
+	<bsdf type="normalmap" id="clam3">
+        <texture name="normalmap" type="bitmap">
+            <boolean name="raw" value="true"/>
+            <string name="filename" value="textures/Clam_03_Normal_2K.jpg"/>
+        </texture>
+		<bsdf type="diffuse">
+			<texture type="bitmap" name="reflectance">
+				<string name="filename" value="textures/Clam_03_Base_Color_2K.jpeg"/>
+			</texture>
+		</bsdf>
+    </bsdf>
+
+	<bsdf type="normalmap" id="clam4">
+        <texture name="normalmap" type="bitmap">
+            <boolean name="raw" value="true"/>
+            <string name="filename" value="textures/Clam_04_Normal_2K.jpg"/>
+        </texture>
+		<bsdf type="diffuse">
+			<texture type="bitmap" name="reflectance">
+				<string name="filename" value="textures/Clam_04_Base_Color_2K.jpeg"/>
+			</texture>
+		</bsdf>
+    </bsdf>
+
+	<bsdf type="twosided" id="Light" >
+		<bsdf type="diffuse" >
+			<rgb name="reflectance" value="0, 0, 0"/>
+		</bsdf>
+	</bsdf>
+	<bsdf type="dielectric" id="Water" >
+		<float name="int_ior" value="1.5" />
+		<float name="ext_ior" value="1" />
+	</bsdf>
+
+	<!-- <shape type="rectangle" >
+		<transform name="to_world">
+			<rotate x="1" y="0" z="0" angle="90"/>
+			<translate x="0" y="500" z="0"/>
+			<scale x="0.1" y="0.1" z="0.1"/>
+        </transform>
+		<ref id="Light" />
+		<emitter type="area" >
+			<rgb name="radiance" value="37324 181972 741127"/>
+		</emitter>
+	</shape> -->
+
+	<emitter type="spot">
+		<transform name="to_world">
+			<!-- Orient the light so that points from (1, 1, 1) towards (1, 2, 1) -->
+			<lookat origin="0.0, 150, 0.0" target="0, 0, 0" up="0, 0, 1"/>
+		</transform>
+		<rgb name="intensity" value="373240 1819720 7411270"/>
+		<float name="cutoff_angle" value="5"/>
+	</emitter>
+
+	<shape type="obj" >
+		<string name="filename" value="meshes/waves.obj" />
+		<transform name="to_world">
+			<translate x="0" y="110" z="0"/>
+			<scale x="1.2" y="1.2" z="1.2"/>
+        </transform>
+		<ref id="Water" />
+	</shape>
+
+	<shape type="obj" >
+		<string name="filename" value="meshes/crab.obj" />
+		<transform name="to_world" >
+			<matrix value="1 0 0 -1 0 1 0 0 0 0 1 1 0 0 0 1"/>
+		</transform>
+		<ref id="Crab" />
+	</shape>
+	<shape type="obj" >
+		<string name="filename" value="meshes/sand_massive.obj" />
+		<transform name="to_world" >
+			<scale x="1.3" y="1.3" z="1.3"/>
+		</transform>
+		<ref id="Sand" />
+	</shape>
+    <shape type="obj" >
+		<string name="filename" value="meshes/shell.obj" />
+		<transform name="to_world">
+			<translate x="-1" y="0.05" z="1"/>
+        </transform>
+		<ref id="SeaShell" />
+	</shape>
+    <shape type="obj" >
+		<string name="filename" value="meshes/clam_01.obj" />
+		<transform name="to_world" >
+			<matrix value="1 0 0 0 0 1 0 0 0 0 1 2 0 0 0 1"/>
+		</transform>
+		<ref id="clam1" />
+	</shape>
+    <shape type="obj" >
+		<string name="filename" value="meshes/clam_02.obj" />
+		<transform name="to_world" >
+			<rotate x="1" angle="178"/>
+			<translate x="0" y="0.4" z="2"/>
+		</transform>
+		<ref id="clam2" />
+	</shape>
+    <shape type="obj" >
+		<string name="filename" value="meshes/clam_03.obj" />
+		<transform name="to_world">
+			<translate x="0" y="0.05" z="2"/>
+        </transform>
+		<ref id="clam3" />
+	</shape>
+    <shape type="obj" >
+		<string name="filename" value="meshes/clam_04.obj" />
+		<transform name="to_world">
+			<translate x="0" y="0.03" z="2"/>
+        </transform>
+		<ref id="clam4" />
+	</shape>
+
+	<!-- sdoiuhfgbchyasdbcfjusahbifcokjssd
+	file_formatdsfv
+	as
+	dfv
+	sdoiuhfgbchyasdbcfjusahbifcokjssdv
+	sand_massives
+	valuesdv
+	sdoiuhfgbchyasdbcfjusahbifcokjssdvsad
+	3D_fish_crapdfsdf -->
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-125.775, 150.000, -127.707"
+                target="-130.802, 0.000, -132.023"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="235418 180000 541581"/>
+    <float name="cutoff_angle" value="6.7486"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-122.967, 150.000, -99.063"
+                target="-127.954, 0.000, -98.367"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="361241 180000 415758"/>
+    <float name="cutoff_angle" value="4.0896"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-127.668, 150.000, -68.895"
+                target="-132.670, 0.000, -71.709"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="685495 180000 91504"/>
+    <float name="cutoff_angle" value="4.4846"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-124.382, 150.000, -39.245"
+                target="-125.839, 0.000, -33.466"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="408218 180000 368781"/>
+    <float name="cutoff_angle" value="6.4567"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-123.564, 150.000, -11.476"
+                target="-118.451, 0.000, -16.276"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="448903 180000 328096"/>
+    <float name="cutoff_angle" value="4.4061"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-121.984, 150.000, 17.999"
+                target="-118.829, 0.000, 12.979"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="112347 180000 664652"/>
+    <float name="cutoff_angle" value="4.0988"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-124.759, 150.000, 39.505"
+                target="-128.384, 0.000, 40.643"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="418139 180000 358860"/>
+    <float name="cutoff_angle" value="6.3769"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-126.242, 150.000, 71.256"
+                target="-130.987, 0.000, 73.777"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="495065 180000 281934"/>
+    <float name="cutoff_angle" value="6.1065"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-129.037, 150.000, 94.014"
+                target="-123.134, 0.000, 93.276"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="280608 180000 496391"/>
+    <float name="cutoff_angle" value="2.8857"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-128.093, 150.000, 122.772"
+                target="-128.969, 0.000, 124.513"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="448929 180000 328070"/>
+    <float name="cutoff_angle" value="6.7642"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-99.565, 150.000, -127.929"
+                target="-97.666, 0.000, -129.092"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="465079 180000 311920"/>
+    <float name="cutoff_angle" value="2.5013"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-95.847, 150.000, -94.075"
+                target="-101.088, 0.000, -95.759"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="277443 180000 499556"/>
+    <float name="cutoff_angle" value="6.6524"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-94.172, 150.000, -71.225"
+                target="-93.502, 0.000, -73.547"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="403625 180000 373374"/>
+    <float name="cutoff_angle" value="3.5964"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-97.741, 150.000, -45.962"
+                target="-94.150, 0.000, -48.844"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="201423 180000 575576"/>
+    <float name="cutoff_angle" value="5.1170"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-94.777, 150.000, -12.374"
+                target="-97.789, 0.000, -10.442"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="733168 180000 43831"/>
+    <float name="cutoff_angle" value="5.7299"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-97.366, 150.000, 11.696"
+                target="-101.669, 0.000, 16.038"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="214009 180000 562990"/>
+    <float name="cutoff_angle" value="5.7906"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-96.305, 150.000, 37.885"
+                target="-97.076, 0.000, 43.820"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="328161 180000 448838"/>
+    <float name="cutoff_angle" value="3.3958"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-96.914, 150.000, 65.827"
+                target="-99.705, 0.000, 69.415"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="730554 180000 46445"/>
+    <float name="cutoff_angle" value="4.1200"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-94.522, 150.000, 101.807"
+                target="-93.799, 0.000, 98.710"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="623601 180000 153398"/>
+    <float name="cutoff_angle" value="4.3381"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-99.518, 150.000, 125.100"
+                target="-94.058, 0.000, 119.577"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="344654 180000 432345"/>
+    <float name="cutoff_angle" value="4.3674"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-70.931, 150.000, -122.185"
+                target="-76.158, 0.000, -124.384"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="297270 180000 479729"/>
+    <float name="cutoff_angle" value="6.7926"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-68.499, 150.000, -100.854"
+                target="-73.961, 0.000, -101.507"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="150494 180000 626505"/>
+    <float name="cutoff_angle" value="2.8109"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-68.991, 150.000, -68.564"
+                target="-74.396, 0.000, -63.940"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="635988 180000 141011"/>
+    <float name="cutoff_angle" value="4.7981"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-72.381, 150.000, -41.048"
+                target="-76.844, 0.000, -41.886"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="369940 180000 407059"/>
+    <float name="cutoff_angle" value="4.3079"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-66.652, 150.000, -17.293"
+                target="-64.177, 0.000, -11.971"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="726602 180000 50397"/>
+    <float name="cutoff_angle" value="6.3300"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-68.706, 150.000, 15.779"
+                target="-65.605, 0.000, 11.469"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="314467 180000 462532"/>
+    <float name="cutoff_angle" value="6.5331"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-67.934, 150.000, 42.582"
+                target="-63.780, 0.000, 44.462"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="251737 180000 525262"/>
+    <float name="cutoff_angle" value="7.0080"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-67.915, 150.000, 66.734"
+                target="-63.834, 0.000, 69.923"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="394492 180000 382507"/>
+    <float name="cutoff_angle" value="4.7761"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-73.435, 150.000, 98.354"
+                target="-70.171, 0.000, 97.264"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="245264 180000 531735"/>
+    <float name="cutoff_angle" value="3.8099"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-72.374, 150.000, 124.197"
+                target="-71.846, 0.000, 119.258"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="249262 180000 527737"/>
+    <float name="cutoff_angle" value="4.8303"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-45.785, 150.000, -124.585"
+                target="-45.851, 0.000, -120.452"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="658197 180000 118802"/>
+    <float name="cutoff_angle" value="2.5977"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-40.052, 150.000, -95.002"
+                target="-45.241, 0.000, -96.628"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="579755 180000 197244"/>
+    <float name="cutoff_angle" value="2.5937"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-38.975, 150.000, -68.886"
+                target="-40.374, 0.000, -65.028"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="233076 180000 543923"/>
+    <float name="cutoff_angle" value="7.3521"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-41.062, 150.000, -38.003"
+                target="-45.432, 0.000, -43.243"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="398818 180000 378181"/>
+    <float name="cutoff_angle" value="5.8121"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-39.680, 150.000, -15.925"
+                target="-42.354, 0.000, -14.074"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="428840 180000 348159"/>
+    <float name="cutoff_angle" value="4.7289"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-40.045, 150.000, 17.311"
+                target="-42.280, 0.000, 13.026"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="601563 180000 175436"/>
+    <float name="cutoff_angle" value="2.6030"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-44.178, 150.000, 41.049"
+                target="-39.310, 0.000, 37.230"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="456687 180000 320312"/>
+    <float name="cutoff_angle" value="4.3728"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-45.583, 150.000, 71.894"
+                target="-46.978, 0.000, 72.248"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="179537 180000 597462"/>
+    <float name="cutoff_angle" value="5.9361"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-45.178, 150.000, 95.309"
+                target="-42.483, 0.000, 99.004"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="105734 180000 671265"/>
+    <float name="cutoff_angle" value="7.2713"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-44.563, 150.000, 123.311"
+                target="-46.324, 0.000, 119.416"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="513093 180000 263906"/>
+    <float name="cutoff_angle" value="3.5464"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-10.983, 150.000, -127.290"
+                target="-11.165, 0.000, -125.696"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="373393 180000 403606"/>
+    <float name="cutoff_angle" value="5.9780"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-12.602, 150.000, -97.825"
+                target="-7.549, 0.000, -97.522"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="75305 180000 701694"/>
+    <float name="cutoff_angle" value="2.9688"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-17.303, 150.000, -70.416"
+                target="-15.258, 0.000, -68.695"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="84314 180000 692685"/>
+    <float name="cutoff_angle" value="5.7033"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-11.240, 150.000, -41.990"
+                target="-15.443, 0.000, -46.419"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="73921 180000 703078"/>
+    <float name="cutoff_angle" value="3.8022"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-17.479, 150.000, -16.006"
+                target="-16.658, 0.000, -21.946"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="147720 180000 629279"/>
+    <float name="cutoff_angle" value="6.2984"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-18.057, 150.000, 11.852"
+                target="-23.941, 0.000, 10.247"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="630846 180000 146153"/>
+    <float name="cutoff_angle" value="5.8936"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-12.667, 150.000, 45.969"
+                target="-17.108, 0.000, 41.967"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="318045 180000 458954"/>
+    <float name="cutoff_angle" value="4.3327"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-15.545, 150.000, 71.271"
+                target="-15.611, 0.000, 73.415"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="126269 180000 650730"/>
+    <float name="cutoff_angle" value="4.2999"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-10.717, 150.000, 101.296"
+                target="-14.300, 0.000, 98.033"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="468768 180000 308231"/>
+    <float name="cutoff_angle" value="4.5905"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="-12.610, 150.000, 123.981"
+                target="-14.603, 0.000, 120.662"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="325624 180000 451375"/>
+    <float name="cutoff_angle" value="5.6048"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="16.080, 150.000, -123.161"
+                target="10.690, 0.000, -124.277"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="480388 180000 296611"/>
+    <float name="cutoff_angle" value="5.0818"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="17.685, 150.000, -96.533"
+                target="20.324, 0.000, -100.601"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="180760 180000 596239"/>
+    <float name="cutoff_angle" value="2.9767"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="16.690, 150.000, -68.208"
+                target="22.173, 0.000, -73.825"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="431640 180000 345359"/>
+    <float name="cutoff_angle" value="6.0819"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="12.782, 150.000, -44.569"
+                target="13.605, 0.000, -46.843"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="653500 180000 123499"/>
+    <float name="cutoff_angle" value="3.0577"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="10.699, 150.000, -14.050"
+                target="6.253, 0.000, -11.501"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="635793 180000 141206"/>
+    <float name="cutoff_angle" value="4.1010"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="18.126, 150.000, 10.679"
+                target="18.196, 0.000, 10.255"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="181416 180000 595583"/>
+    <float name="cutoff_angle" value="6.7833"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="17.414, 150.000, 38.219"
+                target="11.993, 0.000, 33.068"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="230349 180000 546650"/>
+    <float name="cutoff_angle" value="5.9211"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="12.761, 150.000, 68.353"
+                target="14.758, 0.000, 66.286"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="688383 180000 88616"/>
+    <float name="cutoff_angle" value="3.6164"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="13.451, 150.000, 93.866"
+                target="11.625, 0.000, 89.215"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="373307 180000 403692"/>
+    <float name="cutoff_angle" value="5.5126"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="16.857, 150.000, 125.727"
+                target="20.116, 0.000, 125.022"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="217714 180000 559285"/>
+    <float name="cutoff_angle" value="3.2296"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="40.044, 150.000, -124.209"
+                target="42.108, 0.000, -120.938"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="61442 180000 715557"/>
+    <float name="cutoff_angle" value="5.1244"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="40.599, 150.000, -97.210"
+                target="45.721, 0.000, -92.567"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="686146 180000 90853"/>
+    <float name="cutoff_angle" value="4.5562"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="45.518, 150.000, -66.386"
+                target="43.887, 0.000, -69.162"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="151273 180000 625726"/>
+    <float name="cutoff_angle" value="4.3789"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="41.900, 150.000, -38.715"
+                target="43.195, 0.000, -40.880"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="690762 180000 86237"/>
+    <float name="cutoff_angle" value="2.6489"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="38.399, 150.000, -14.366"
+                target="33.339, 0.000, -14.631"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="693573 180000 83426"/>
+    <float name="cutoff_angle" value="2.5042"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="41.537, 150.000, 17.520"
+                target="46.147, 0.000, 18.606"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="342587 180000 434412"/>
+    <float name="cutoff_angle" value="4.2025"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="44.471, 150.000, 39.808"
+                target="39.251, 0.000, 35.252"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="478778 180000 298221"/>
+    <float name="cutoff_angle" value="6.8508"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="39.802, 150.000, 73.742"
+                target="37.226, 0.000, 72.974"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="372134 180000 404865"/>
+    <float name="cutoff_angle" value="5.6877"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="43.741, 150.000, 97.309"
+                target="43.485, 0.000, 96.817"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="502758 180000 274241"/>
+    <float name="cutoff_angle" value="5.0040"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="41.517, 150.000, 125.205"
+                target="36.256, 0.000, 124.700"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="211452 180000 565547"/>
+    <float name="cutoff_angle" value="4.9664"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="66.765, 150.000, -126.082"
+                target="71.155, 0.000, -121.877"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="593761 180000 183238"/>
+    <float name="cutoff_angle" value="6.9062"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="73.229, 150.000, -99.961"
+                target="72.594, 0.000, -103.984"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="118132 180000 658867"/>
+    <float name="cutoff_angle" value="3.6542"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="69.628, 150.000, -70.848"
+                target="66.166, 0.000, -76.282"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="542585 180000 234414"/>
+    <float name="cutoff_angle" value="6.6426"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="69.804, 150.000, -39.829"
+                target="71.942, 0.000, -37.895"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="99993 180000 677006"/>
+    <float name="cutoff_angle" value="5.0357"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="68.373, 150.000, -11.649"
+                target="63.147, 0.000, -16.212"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="596523 180000 180476"/>
+    <float name="cutoff_angle" value="2.7284"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="69.064, 150.000, 17.067"
+                target="71.568, 0.000, 16.859"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="666439 180000 110560"/>
+    <float name="cutoff_angle" value="5.5608"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="72.321, 150.000, 42.675"
+                target="77.661, 0.000, 42.129"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="186813 180000 590186"/>
+    <float name="cutoff_angle" value="2.8137"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="69.952, 150.000, 71.147"
+                target="70.874, 0.000, 71.698"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="332246 180000 444753"/>
+    <float name="cutoff_angle" value="5.8338"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="68.585, 150.000, 101.172"
+                target="66.310, 0.000, 105.730"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="161471 180000 615528"/>
+    <float name="cutoff_angle" value="6.7193"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="66.669, 150.000, 124.115"
+                target="63.258, 0.000, 124.591"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="660571 180000 116428"/>
+    <float name="cutoff_angle" value="4.1328"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="96.500, 150.000, -126.370"
+                target="96.532, 0.000, -129.790"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="139690 180000 637309"/>
+    <float name="cutoff_angle" value="5.5851"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="94.882, 150.000, -95.204"
+                target="90.333, 0.000, -94.166"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="356516 180000 420483"/>
+    <float name="cutoff_angle" value="6.4831"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="94.874, 150.000, -70.438"
+                target="90.851, 0.000, -70.213"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="221805 180000 555194"/>
+    <float name="cutoff_angle" value="6.2133"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="101.380, 150.000, -45.084"
+                target="99.744, 0.000, -43.470"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="133646 180000 643353"/>
+    <float name="cutoff_angle" value="3.9630"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="98.617, 150.000, -10.886"
+                target="99.649, 0.000, -6.176"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="229231 180000 547768"/>
+    <float name="cutoff_angle" value="5.2730"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="101.129, 150.000, 11.911"
+                target="102.769, 0.000, 9.005"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="337920 180000 439079"/>
+    <float name="cutoff_angle" value="5.0383"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="101.609, 150.000, 39.189"
+                target="102.864, 0.000, 44.506"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="718284 180000 58715"/>
+    <float name="cutoff_angle" value="6.8075"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="99.455, 150.000, 67.265"
+                target="105.005, 0.000, 69.744"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="391478 180000 385521"/>
+    <float name="cutoff_angle" value="6.2913"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="99.114, 150.000, 97.015"
+                target="104.615, 0.000, 95.335"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="397074 180000 379925"/>
+    <float name="cutoff_angle" value="3.0325"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="100.199, 150.000, 123.769"
+                target="94.700, 0.000, 120.462"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="214466 180000 562533"/>
+    <float name="cutoff_angle" value="5.8179"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="125.458, 150.000, -127.623"
+                target="124.803, 0.000, -123.633"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="375326 180000 401673"/>
+    <float name="cutoff_angle" value="2.5037"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="128.828, 150.000, -98.695"
+                target="134.402, 0.000, -100.779"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="414132 180000 362867"/>
+    <float name="cutoff_angle" value="3.7147"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="125.900, 150.000, -66.764"
+                target="129.046, 0.000, -71.943"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="278917 180000 498082"/>
+    <float name="cutoff_angle" value="4.9572"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="126.570, 150.000, -38.588"
+                target="130.858, 0.000, -36.784"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="438780 180000 338219"/>
+    <float name="cutoff_angle" value="7.2467"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="125.320, 150.000, -10.678"
+                target="128.871, 0.000, -16.226"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="148695 180000 628304"/>
+    <float name="cutoff_angle" value="7.0826"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="123.711, 150.000, 10.409"
+                target="124.113, 0.000, 4.679"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="275887 180000 501112"/>
+    <float name="cutoff_angle" value="6.5412"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="129.081, 150.000, 45.401"
+                target="131.707, 0.000, 40.627"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="508883 180000 268116"/>
+    <float name="cutoff_angle" value="3.3702"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="121.935, 150.000, 69.938"
+                target="127.435, 0.000, 74.456"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="311020 180000 465979"/>
+    <float name="cutoff_angle" value="4.0746"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="129.800, 150.000, 100.599"
+                target="126.856, 0.000, 106.448"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="190344 180000 586655"/>
+    <float name="cutoff_angle" value="2.6278"/>
+</emitter>
+
+<emitter type="spot">
+    <transform name="to_world">
+        <lookat origin="125.259, 150.000, 124.053"
+                target="120.878, 0.000, 121.154"
+                up="0, 0, 1"/>
+    </transform>
+    <rgb name="intensity" value="233554 180000 543445"/>
+    <float name="cutoff_angle" value="4.3112"/>
+</emitter>
+
+
+
+</scene>
