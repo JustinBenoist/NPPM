@@ -14,7 +14,7 @@ Follow the steps below to set up and install the project:
 
 ```bash
 git clone https://github.com/JustinBenoist/NPPM.git --recursive
-cd photon_mapper
+cd NPPM
 ```
 
 #### Facultative: Set Python Version (using pyenv)
