@@ -13,7 +13,7 @@ Follow the steps below to set up and install the project:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/JustinBenoist/photon_mapper.git --recursive
+git clone https://github.com/JustinBenoist/NPPM.git --recursive
 cd photon_mapper
 ```
 
